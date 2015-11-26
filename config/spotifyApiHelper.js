@@ -2,7 +2,6 @@ var request = require('request'),
     async   = require('async');
 
 var Circle = require('../models/circle');
-var locus = require('locus');
 
 function buildPlaylistUri(userId) {
   return `https:\/\/api.spotify.com/v1/users/${userId}/playlists`
