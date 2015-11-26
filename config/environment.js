@@ -1,8 +1,8 @@
 var _ = require('lodash');
 
 var localEnvVars = {
-  TITLE:      'aux-hog',
-  SAFE_TITLE: 'aux-hog'
+  TITLE:      'piradio',
+  SAFE_TITLE: 'piradio'
 };
 
 // Merge all environmental variables into one object.
