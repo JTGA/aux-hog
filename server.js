@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 var passport     = require('passport');
 var querystring  = require('querystring');
+var locus        = require('locus');
 
 require('dotenv').load();
 // Load local libraries.
