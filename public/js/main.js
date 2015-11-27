@@ -1,5 +1,9 @@
 console.log('JS loaded!');
 
+var userId;
+var friendsToAdd = [];
+var friendId;
+
 $(document).ready(function() {
 
   var circles   = _.template($('#circles-template').html());
@@ -24,7 +28,8 @@ $(document).ready(function() {
 
 
 
-  function doSearch(currentSearch){
+    function doSearch(currentSearch){
+
     $.ajax({
       type: 'GET',
       url: buildUri(currentSearch),
@@ -32,36 +37,73 @@ $(document).ready(function() {
       console.log(jqXHR.status);
       console.log(textStatus);
       console.log(errorThrown);
-      alert("No User found!");
+      $('#friend').empty();
+      $('#friend').append('<p>No users match that ID</p>');
     },
       success: function(data){
         console.log(data);
-        userData = data;
-        var nameDisplay = userData.display_name || userData.id;
+        foundUser = data;
+        if (foundUser.images.length > 0) {
+          profileImage = foundUser.images[0].url;
+        } else {
+          profileImage = null;
+        }
+
+        if (profileImage) {
+          $('#friend').append('<div id="proImg">');
+          $('#proImg').css('background-image', 'url(' + profileImage + ')');
+        } else {
+          $('#friend').append('<div id="proImg">');
+          $('#proImg').css('background-image', 'url(http://www.sessionlogs.com/media/icons/defaultIcon.png)');
+        }
+
+
+        if(foundUser.display_name) {
+          $('#friend').append(foundUser.display_name);
+        } else {
+          $('#friend').append(foundUser.id);
+        }
+        $('#friend').append('<input type="submit" id="addToCircle" value="Add Friend">');
+        $('#addToCircle').on('click', function(){
+              var friend = $('#friend div').html();
+              $('#circleMembers').append('<li class="addedFriend" id="'+foundUser.id+'">'+foundUser.display_name+'</li>');
+              $('#friend').empty();
+          });
       }
-
     });
-
   }
 
-
-  $('#search').on('keypress blur', function(evt) {
+  $('#search').on('keyup blur', function(evt) {
     var currentSearch = $('#search').val();
-    if (evt.keyCode === 13 || evt.type === 'blur') doSearch(currentSearch);
+      $('#friend').empty();
+      doSearch(currentSearch);
+
+    // if (evt.keyCode === 13) {
+    //   $('#friend').empty();
+    //   doSearch(currentSearch);
+    // } else {
+    //   $('#friend').empty();
+    //   doSearch(currentSearch);
+    // }
   });
 
+  var title = $('#titleField').val();
 
-  function addUserToCircle() {
-
-    $.post('/api/circles', { fact: $('#addUser').val() }).done(function(data) {
-    $('#addUser').val('');
-    var updated = _.find(allUsers, function(user) {
-      return user._id === data._id;
+  $('#createCircle').on('click', function(){
+    $.each($('.addedFriend'), function(i, friend){
+      friendId = $(friend).attr('id');
+      $.post('/users', {spotifyId: friendId},
+        function(data){
+          var newId = data._id;
+          friendsToAdd.push(newId);
+          console.log(friendsToAdd);
+        });
     });
-    updated.facts.push(data.facts.pop());
-    render();
   });
 
-  }
+  // $.post('/circles', {title: title, users: friendsToAdd}, function(data){console.log(data);}, function(err){console.log(err);});
+
+
+
 
 });

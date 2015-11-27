@@ -13,13 +13,20 @@
 
         <script type="text/template" id="circles-template">
         <h1>Welcome, <%= name %></h1>
+        <input id="titleField" placeholder="title"></input>
+        <ul id="circleMembers">
+        </ul>
+        <div class="input-field">
+          <input id="search" type="search" placeholder="search for friends">
+        </div>
+        <div id="friend">
+
+        </div>
+        <button id="createCircle">Create Circle</button>
         <% if (userCircles.length > 0) { %>
         <p>You have circles</p>
         <% } else { %>
           <p>You do not have circles, start looking for some homies and create a circle!</p>
-          <div class="input-field">
-            <input id="search" type="search" placeholder="search for friends">
-          </div>
 
 
         <% } %>
@@ -36,10 +43,10 @@
 
   <script>
     var name        = '';
-    var userCircles = '';
+    var userCircles = [];
     <$ if (user) { $>
       name = '<$= user.displayName $>';
-      userCircles = '<$= user.circles $>';
+      userCircles = <$= JSON.stringify(user.circles) $>;
     <$ } $>
   </script>
 

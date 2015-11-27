@@ -6,21 +6,25 @@ var express     = require('express'),
 
 // Require controllers.
 var welcomeController = require('../controllers/welcome');
+var circlesController = require('../controllers/api');
 
 // root path:
 router.get('/', welcomeController.index);
 
-//TEMPORARY*********
-router.get('/testLib',function(req,res) {
+router.post('/circles', circlesController.createCircle);
+
+router.post('/users', circlesController.addCircleUsers);
+
+router.get('/libraries',function(req,res) {
 //  eval(locus);
   var spotify = require('./spotifyApiHelper');
   var Circle = require('../models/circle');
   Circle.find({}, function(err, circles) {
     var libraries = spotify.buildLibraries(circles[0].id, req.user.accessToken);
-    console.log(libraries);
+    // console.log(libraries);
+    res.json(libraries);
   });
 });
-//**********TEMPORARY
 
 // Spotify Login:
 var generateRandomString = function(length) {
