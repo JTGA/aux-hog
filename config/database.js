@@ -21,7 +21,7 @@ if (!env.DATABASE_URL) {
     console.log("YOU MUST BOW BEFORE THE MONGOD FIRST, MORTAL!");
     process.exit(0);
   });
-}
+
 
 mongoose.connect(dbUri);
 

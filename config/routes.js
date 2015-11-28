@@ -15,7 +15,20 @@ router.post('/circles', circlesController.createCircle);
 
 router.post('/users', circlesController.addCircleUsers);
 
-router.get('/libraries',function(req,res) {
+router.get('/testLib', function(req, res) {
+  Circle.find({}, function(err, circles) {
+    spotify.buildStation(req.query._id, req.user.accessToken).
+      then(function(station) {
+        res.json(station);
+        console.log(station);
+      }).
+      then(function(){
+        res.redirect('/')
+      });
+  });
+});
+
+router.get('/libraries',function(req, res) {
 //  eval(locus);
   var spotify = require('./spotifyApiHelper');
   var Circle = require('../models/circle');

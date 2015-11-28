@@ -5,54 +5,60 @@
     <$- include('partials/head') $>
   </head>
   <body>
-    <main>
+  <main>
     <$ if (user) { $>
       <div>
         <a href="/logout">Logout</a>
         <a href="/testLib">Test buildLibraries</a>
-
         <script type="text/template" id="circles-template">
-        <h1>Welcome, <%= name %></h1>
-        <input id="titleField" placeholder="title"></input>
-        <ul id="circleMembers">
-        </ul>
-        <div class="input-field">
-          <input id="search" type="search" placeholder="search for friends">
-        </div>
-        <div id="friend">
-
-        </div>
-        <button id="createCircle">Create Circle</button>
-        <% if (userCircles.length > 0) { %>
-        <p>You have circles</p>
-        <% } else { %>
-          <p>You do not have circles, start looking for some homies and create a circle!</p>
-
-
-        <% } %>
+          <h1>Welcome, <%= name %></h1>
+          <% if (userCircles.length > 0) { %>
+            <div id="circlesList">
+              <% userCircles.forEach(function(circle){ %>
+                <%= circle.title %>
+                <a href="/testLib" id="<%= circle._id %>" class="stationLink">Generate</a>
+              <% });%>
+            </div>
+          <% } else { %>
+            <p>You do not have circles, start looking for some homies and create a circle!</p>
+          <% } %>
+          <h3>Create a new circle!</h3>
+          <input id="titleField" placeholder="title"></input>
+          <ul id="circleMembers">
+          </ul>
+          <div class="input-field">
+            <input id="search" type="search" placeholder="search for friends">
+          </div>
+          <div id="friend">
+          </div>
+          <button id="createCircle">Create Circle</button>
+          <div id="spotifyPlayer">
+          </div>
         </script>
       </div>
     <$ } else { $>
       <div>
-        <h1>First, log in to spotify</h1>
+        <h1>Pi.RS</h1>
+        <h3>Peer to peer radio</h3>
         <a href="/login">Log in</a>
       </div>
     <$ } $>
-    </main>
+  </main>
 
 
   <script>
     var name        = '';
     var userCircles = [];
+    var circleId;
+
     <$ if (user) { $>
-      name = '<$= user.displayName $>';
-      userCircles = <$= JSON.stringify(user.circles) $>;
+      name = '<$- user.displayName $>';
+      userCircles = JSON.parse('<$- JSON.stringify(user.circles) $>');
     <$ } $>
   </script>
 
 
   <$- include('partials/scripts') $>
-  <$- include('partials/templates') $>
   </body>
 
 </html>
