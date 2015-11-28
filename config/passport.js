@@ -26,7 +26,7 @@ module.exports = function(passport) {
           displayName: profile.displayName || profile.username,
           email:       profile.emails[0].value,
           spotifyId:   profile.id,
-          profileImage: profile.images[0].url,
+          // profileImage: profile.images[0].url,
           circles: []
         });
 
