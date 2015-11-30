@@ -77,7 +77,7 @@ res.redirect('https://accounts.spotify.com/authorize?' +
     response_type: 'code',
     client_id: process.env.CLIENT_ID,
     scope: scope,
-    redirect_uri: 'http://localhost:3000/callback',
+    redirect_uri: 'https://piradio.herokuapp.com/callback',
     state: state
   }));
 });
