@@ -12,13 +12,19 @@
         <a href="/testLib">Test buildLibraries</a>
         <script type="text/template" id="circles-template">
           <h1>Welcome, <%= name %></h1>
+              <div id="circlesList">
           <% if (userCircles.length > 0) { %>
-            <div id="circlesList">
-              <% userCircles.forEach(function(circle){ %>
+            <% userCircles.forEach(function(circle){ %>
+              <div>
                 <%= circle.title %>
-                <a href="/testLib" id="<%= circle._id %>" class="stationLink">Generate</a>
-              <% });%>
-            </div>
+                <button id="<%= circle._id %>" class="stationLink">Generate</button>
+                <%= circle.users %>
+
+                <input type="button" value="X" id="<%= circle._id %>" class="deleteCircle">
+
+                </div>
+            <% });%>
+              </div>
           <% } else { %>
             <p>You do not have circles, start looking for some homies and create a circle!</p>
           <% } %>
@@ -59,6 +65,7 @@
 
 
   <$- include('partials/scripts') $>
+  <$- include('partials/template') $>
   </body>
 
 </html>

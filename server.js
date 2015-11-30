@@ -40,7 +40,7 @@ app.use(logger('dev'));
 
 // Helper layer (parses the requests, and adds further data).
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 app.use(session({

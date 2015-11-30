@@ -1,21 +1,28 @@
-console.log('JS loaded!');
-
-var userId;
-var friendsToAdd = [];
-var friendId;
+console.log('main.js loaded!');
 
 $(document).ready(function() {
 
-  var circles   = _.template($('#circles-template').html());
-  var $destination  = $('main');
+  var circles   = _.template($('#circles-template').html()),
+      $destination  = $('main'),
+      friendsToAdd = [],
+      filteredUsers = [],
+      searchName    = '',
+      userId,
+      friendId;
+
+  // =============Templating=============
+  // ====================================
 
   $destination.append(circles);
+  function circleView(){
 
-  var filteredUsers = [],
-      searchName    = '';
+  }
+
+  // ================Main================
+  // ====================================
 
 
-  var buildUri = function(nameInput) {
+  function buildUri(nameInput) {
       var baseUri = 'https://api.spotify.com/v1/users/';
 
       var searchParam = nameInput
@@ -26,10 +33,7 @@ $(document).ready(function() {
       return baseUri + searchParam
     }
 
-
-
-    function doSearch(currentSearch){
-
+  function doSearch(currentSearch){
     $.ajax({
       type: 'GET',
       url: buildUri(currentSearch),
@@ -77,57 +81,47 @@ $(document).ready(function() {
     var currentSearch = $('#search').val();
       $('#friend').empty();
       doSearch(currentSearch);
-
-    // if (evt.keyCode === 13) {
-    //   $('#friend').empty();
-    //   doSearch(currentSearch);
-    // } else {
-    //   $('#friend').empty();
-    //   doSearch(currentSearch);
-    // }
   });
 
   $('#createCircle').on('click', function(){
+    var title = $('#titleField').val();
     $.each($('.addedFriend'), function(i, friend){
       friendId = $(friend).attr('id');
-      $.post('/users', {spotifyId: friendId},
-        function(data){
-          var newId = data._id;
-          friendsToAdd.push(newId);
-          console.log(friendsToAdd);
-        });
+      friendsToAdd.push(friendId);
     });
-
-    var title = $('#titleField').val();
-    var postCircles = function(){
-      $.ajax({
-        url: '/circles',
-        type: 'POST',
-        data: {
-          title: title,
-          users: JSON.stringify(friendsToAdd)
-        },
-        success: function(data){
-          console.log(data);
-        }
-      });
-    }
-    setTimeout(postCircles, 500);
+    $.ajax({
+      url: '/circles',
+      type: 'POST',
+      data: {
+        users: JSON.stringify(friendsToAdd),
+        title: title,
+      },
+      success: function(data){
+        // new CircleView(data);
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.status);
+        console.log(textStatus);
+        console.log(errorThrown);
+      }
+    });
   });
 
+
   $('#circlesList').delegate('.stationLink', 'click', function(evt){
+    evt.preventDefault();
     var id = $(this).attr('id');
     console.log(id);
-    evt.preventDefault();
     $.ajax({
-      url: '/testLib',
       type: 'GET',
+      url: 'http://localhost:3000/testLib',
       data: {
-        _id: id
+        disId: id
       },
       success: function(data) {
         console.log(data);
-        $('#spotifyPlayer').append('<iframe src="https://embed.spotify.com/?uri=spotify:trackset:PREFEREDTITLE:' + data + ' frameborder="0" allowtransparency="true"></iframe>');
+        $('#spotifyPlayer').append('<iframe src="https://embed.spotify.com/?uri=spotify:trackset:PREFEREDTITLE:' + data + '" frameborder="0" allowtransparency="true"></iframe>');
       },
       error: function() {
         console.log('herb')
@@ -135,6 +129,16 @@ $(document).ready(function() {
     });
   });
 
+  $('#circlesList').delegate('.deleteCircle', 'click', function(evt){
+        var id = $(this).attr('id');
+        $('#' + id).remove();
+        $.ajax({
+          method: 'DELETE',
+          url: '/circles/' + id
+        }).done(function(data) {
+          console.log(data);
+        });
+      });
 
 });
 

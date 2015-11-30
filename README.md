@@ -1,26 +1,17 @@
-npm# Aux-Hog
+#PiRS.fm
 
-##Our Product
-
+Never argue with your friends about who gets to pick the music again! Brought to you by Boom Squad, Pi.RS is a peer to peer music application
 
 ##Technologies Used
-
-
-##User Stories
-
+*
 
 ##Trello
 
-###Created By:
--Ben
--Gev
--Judd
--Melissa
--Mike
+
 
 ## Installation
 
-To run the app you will need to:
+To run the application locally you will need to:
 
 * Run npm install
 * Run npm install for these additional items:
@@ -29,3 +20,9 @@ To run the app you will need to:
     * passport
     * passport-spotify
 * Create a .env with the client_id and client_secret
+
+
+
+___
+
+© Boom Squad - Ben Benjamin, Gev Gharadaghi, Judd Hood, Melissa Wilcox, Mike Klophaus

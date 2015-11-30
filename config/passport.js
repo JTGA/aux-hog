@@ -15,9 +15,13 @@ module.exports = function(passport) {
       if (user) {
         debug("OAuth successful, found user: ", user.displayName);
         user.accessToken = accessToken;
-      //  user.save(function(user){
-        return done(null, user);
-    //  })
+
+        if(user.accessToken) {
+          user.save(function(err, user) {
+            if (err) return done(err);
+            return done(null, user);
+          });
+        }
 
       } else {
         debug("OAuth successful, user not found!");
@@ -33,11 +37,12 @@ module.exports = function(passport) {
         // getImage();
 
         var newUser = new User({
-          displayName: profile.displayName || profile.username,
-          email:       profile.emails[0].value,
-          spotifyId:   profile.id,
+          displayName:  profile.displayName || profile.username,
+          email:        profile.emails[0].value,
+          spotifyId:    profile.id,
           profileImage: null,
-          circles: []
+          circles:      [],
+          accessToken:  accessToken
         });
 
         newUser.save(function(err, user) {

@@ -10,6 +10,7 @@ var userSchema = new Schema({
   spotifyId: String,
   profileImage: String,
   created: { type: Date, default: Date.now },
+  accessToken: String,
   circles: Array
 });
 
