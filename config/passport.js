@@ -7,7 +7,7 @@ module.exports = function(passport) {
   passport.use(new SpotifyStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/callback"
+    callbackURL: "https://piradio.herokuapp.com/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOne({ 'spotifyId': profile.id }, function(err, user) {
